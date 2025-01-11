@@ -49,7 +49,9 @@
                 li.textContent=`${msg.name} : ${msg.time} - ${msg.message }`
                 document.getElementById("list").appendChild(li);
             })
-
+            stompClient.subscribe("/topic/rideRequest",function(data){
+                console.log("New Ride Request",data.body);
+            })
         })
     }
 

@@ -13,11 +13,9 @@ import org.springframework.stereotype.Controller;
 
 @Controller
 public class TestController {
-    private final SimpMessagingTemplate messagingTemplate;
     private final SimpMessagingTemplate simpMessagingTemplate;
 
-    TestController(SimpMessagingTemplate messagingTemplate, SimpMessagingTemplate simpMessagingTemplate) {
-        this.messagingTemplate = messagingTemplate;
+    TestController( SimpMessagingTemplate simpMessagingTemplate) {
         this.simpMessagingTemplate = simpMessagingTemplate;
     }
 
