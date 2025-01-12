@@ -29,20 +29,20 @@
     })
     function connect(){
 
-        const socket=new SockJS("http://localhost:8080/ws")
+        const socket=new SockJS("http://localhost:3002/ws")
         stompClient=Stomp.over(socket);
         stompClient.connect({},function(){
             console.log("connected");
             stompClient.subscribe("/topic/ping",function(message){
                 console.log("Received a new message from server ",message);
             });
-            /*    stompClient.subscribe("/topic/scheduled",function(message){
+               stompClient.subscribe("/topic/scheduled",function(message){
                     console.log("Received a new scheduled  message from server ",message);
                     const li=document.createElement("li");
                     li.textContent=message.body;
                     document.getElementById("list").appendChild(li);
                 });
-            */
+            
             stompClient.subscribe("/topic/message/123",function(data){
                 const msg=JSON.parse(data.body);
                 const li=document.createElement("li");
@@ -50,7 +50,12 @@
                 document.getElementById("list").appendChild(li);
             })
             stompClient.subscribe("/topic/rideRequest",function(data){
-                console.log("New Ride Request",data.body);
+                const bookingId=JSON.parse(data.body).bookingId;
+                const response=confirm(`You have a new Ride Request from passenger ${JSON.parse(data.body).passsengerId}. Do you accept it?`);
+                if(response==true){
+                    const id=prompt("Please enter your driver id");
+                    stompClient.send(`/app/rideResponse/${id}`,{},JSON.stringify({response,bookingId}));   
+                }
             })
         })
     }
